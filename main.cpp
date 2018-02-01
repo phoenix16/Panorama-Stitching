@@ -28,16 +28,11 @@ int main(int argc, char* argv[])
 	Mat image1 = imread(argv[1]);
 	Mat image2 = imread(argv[2]);
 	Mat image3 = imread(argv[3]);
-    Mat image4 = imread(argv[4]);
+        Mat image4 = imread(argv[4]);
 
 	if( !image1.data || !image2.data || !image3.data || !image4.data)
 	{ cout << "Error reading images " << endl; return -1; }
-		
-	//vector<Mat> imgs; 
-	//imgs.push_back(image1);
-	//imgs.push_back(image2);
-	//imgs.push_back(image3);
-		
+				
     Mat pano1, pano2, rightImageWarped1, rightImageWarped2, panoramaOut;
 
     stitchLeftRight(image1, image2, rightImageWarped1, pano1);
@@ -58,11 +53,9 @@ int main(int argc, char* argv[])
     imshow("image 2", image2);
     imshow("image 3", image3);
 
-	waitKey(0);
-	return 0;
+    waitKey(0);
+    return 0;
 }
-
-
 
 void stitchLeftRight(Mat& leftImage, Mat& rightImage, Mat& rightImageWarped, Mat& panorama)
 {
@@ -101,10 +94,10 @@ void stitchLeftRight(Mat& leftImage, Mat& rightImage, Mat& rightImageWarped, Mat
 	std::vector< DMatch > good_matches;	
 	for (int i = 0; i < descriptors_leftImage.rows; i++)
 	{ 
-		if (matches[i].distance < 3*min_dist)
+	    if (matches[i].distance < 3*min_dist)
 	    {
-			good_matches.push_back(matches[i]); 
-		}
+		good_matches.push_back(matches[i]); 
+	    }
 	}
 
 	// Isolate the matched keypoints in each image
@@ -128,4 +121,3 @@ void stitchLeftRight(Mat& leftImage, Mat& rightImage, Mat& rightImageWarped, Mat
     Mat roi(panorama, Rect(0, 0, leftImage.cols, leftImage.rows));
     leftImage.copyTo(roi);
 }
-
